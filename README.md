@@ -1,5 +1,5 @@
 # Project1Group4
-oject 1 Random Music Finder
+Project 1 Random Music Finder
 
 ## User Story
 
@@ -29,4 +29,7 @@ https://www.theaudiodb.com/api_guide.php
 http://open-platform.theguardian.com/
 
 ## Contributors
+- Matthew Bishop
+- Nancy McBride
+- Brenna McLeod
 
