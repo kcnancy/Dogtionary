@@ -1,32 +1,30 @@
 # Project1Group4
-Project 1 Random Music Finder
+Project 1 Dogtionary
 
 ## User Story
 
-As a fan of music
+As a dog lover
 
-I want to select an artist or specific song.
+I want to select a breed of dog.
 
-When I open the Music Finder
+When I open the Dogtionary
 
-I want to be able to enter an artist name or specific song
+I want to be able to select a dog breed from the drop down menu or type the breed name in the search box.
 
-Then I want to see facts and/or an image of the artist or song.
+Then I want to see facts and/or an image of the dog breed. 
 
-Then I want to see additional information about the artist.
+Then I want to see local places where I might be able to adopt a dog of this breed. 
 
-Additional information may include recent news stories, other business ventures, resumption of live appearances. 
+ 
 
 
 ## Resources
 
 https://tailwindcss.com/
 
-https://www.mediawiki.org/wiki/API:Main_page
+https://www.petfinder.com/developers/
 
-https://www.theaudiodb.com/api_guide.php
-
-http://open-platform.theguardian.com/
+https://thedogapi.com/
 
 ## Contributors
 - Matthew Bishop
