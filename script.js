@@ -72,14 +72,11 @@ $(document).ready(function(){
   function displayBreed(image) {
     $('#breed_image').attr('src', image.url);
     $("#breed_data_table tr").remove();
-
-    var breed_data = image.breeds[0]
-    $.each(breed_data, function(key, value) {
-      // as 'weight' and 'height' are objects that contain 'metric' and 'imperial' properties, just use the metric string
-      if (key == 'weight' || key == 'height') value = value.metric
-      // add a row to the table
-      $("#breed_data_table").append("<tr><td>" + key + "</td><td>" + value + "</td></tr>");
-    });
+    $("#breed-name").text(image.breeds[0].name);
+    $("#breed-height").text("Height: " + image.breeds[0].height.metric + " inches");
+    $("#breed-weight").text("Weight: " + image.breeds[0].weight.metric + " lbs");
+    $("#breed-temperment").text("Temperament: " + image.breeds[0].temperament);
+    $("#breed-lifespan").text("Life Span: " + image.breeds[0].life_span);
   }
 
   // make an Ajax request
