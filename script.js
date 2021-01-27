@@ -24,27 +24,9 @@ $(document).ready(function(){
   var $breed_select = $('select.breed_select');
   $breed_select.change(function() {
     var id = $(this).children(":selected").attr("id");
+    console.log(id);
     getDogByBreed(id)
   });
-
-  // Load all the Breeds
-  function getBreeds() {
-    ajax_get('https://api.thedogapi.com/v1/breeds', function(data) {
-      populateBreedsSelect(data)
-      breeds = data
-    });
-  }
-
-  // Put the breeds in the Select control
-  function populateBreedsSelect(breeds) {
-    $breed_select.empty().append(function() {
-      var output = '';
-      $.each(breeds, function(key, value) {
-        output += '<option id="' + value.id + '">' + value.name + '</option>';
-      });
-      return output;
-    });
-  }
 
   // triggered when the breed select control changes
   function getDogByBreed(breed_id) {
@@ -84,7 +66,7 @@ $(document).ready(function(){
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
       if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-        console.log('responseText:' + xmlhttp.responseText);
+        // console.log('responseText:' + xmlhttp.responseText);
         try {
           var data = JSON.parse(xmlhttp.responseText);
         } catch (err) {
@@ -98,6 +80,26 @@ $(document).ready(function(){
     xmlhttp.open("GET", url, true);
     xmlhttp.send();
   }
-  // call the getBreeds function which will load all the Dog breeds into the select control
+
+  // Loads the breeds into the dropdown list
+  function populateBreedsSelect(breeds) {
+    $breed_select.empty().append(function() {
+      var output = '';
+      $.each(breeds, function(key, value) {
+        output += '<option id="' + value.id + '">' + value.name + '</option>';
+      });
+      return output;
+    });
+  }
+
+  // On initial page load, gets all of the available breeds and assigns that data to the breeds variable
+  function getBreeds() {
+    ajax_get('https://api.thedogapi.com/v1/breeds', function(data) {
+      populateBreedsSelect(data)
+      breeds = data
+    });
+  }
+
+  // call the getBreeds function which will load all the Dog breeds into the dropdown list
   getBreeds();
 })
