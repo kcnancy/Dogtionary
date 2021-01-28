@@ -131,10 +131,20 @@ $.ajax ({
     success: function(result){
         console.log(result);
         var arr = result.organizations.splice(0, 10);
-        console.log(arr);
         var idQuery = arr.map((o,i)=> o.id).join(",");
         console.log(this);
         console.log("https://api.petfinder.com/v2/animals" + "?organization=" + idQuery)
+
+        $.ajax ({
+          url: "https://api.petfinder.com/v2/types/Dog",
+          method:"GET",
+          headers: {
+            "Authorization": obj.token_type + " " + obj.access_token
+          },
+          success: function(type) {
+            console.log(type);
+          }
+        })
 
         $.ajax ({
           url: "https://api.petfinder.com/v2/animals" + "?organization=" + idQuery,
@@ -145,8 +155,9 @@ $.ajax ({
           success: function(data) {
             console.log(data.animals);
             var animals = data.animals;
-            for(i = 0; i < animals.length; i++) {
-              var animal = animals[i];
+            var dogArray = animals.filter(dog => dog.type === "Dog");
+            for(i = 0; i < dogArray.length; i++) {
+              var animal = dogArray[i];
               var container = $("<div>").addClass("p-5");
               var card = $("<div>").addClass("max-w-sm rounded overflow-hidden shadow-lg")
               var img = $("<img>").attr("src", animal.primary_photo_cropped.small).addClass("w-full").attr("alt", animal.name);
@@ -158,8 +169,15 @@ $.ajax ({
               var cardInner2 = $("<div>").addClass("px-6 py-4 pb-2");
               var span1 = $("<span>").addClass("inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2").text(animal.contact.email);
               var span2 = $("<span>").addClass("inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2").text(animal.contact.phone);
-              var span3 = $("<span>").addClass("inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2").text(animal.breeds.primary);
-              
+              var span3 = $("<span>").addClass("inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 breedID").text(animal.breeds.primary);
+              $(".breedID").click(function() {
+                var breedSearch = $("#breed-search");
+                $('html, body').animate({
+                  scrollTop: $("#breed-search").offset().top
+                }, 1000);
+                breedSearch.val(animal.breeds.primary);
+              })
+
               cardInner2.append(span1, span2, span3);
               cardInner.append(cardTitle, cardDesc);
               card.append(img, cardInner, cardInner2);
@@ -175,3 +193,4 @@ $.ajax ({
 })
 }
 })
+
