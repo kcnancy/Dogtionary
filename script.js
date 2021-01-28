@@ -1,18 +1,29 @@
 var breeds;
+var search_str = "";
 
 $(document).ready(function(){
+  $('#adoption-info').hide();
 
-  $('#breed_search').on('input', function(e) {
+  $('#breed-search').on('input', function(e) {
     var search_str = $(this).val();
     searchBreeds(search_str);
   });
 
+  $(document).on("click", ".breedID", function() {
+    $('html, body').animate({
+      scrollTop: $("#breed-search").offset().top
+    }, 1000);
+    $("#breed-search").val(this.innerHTML);
+    var search_str = $("#breed-search").val();
+    searchBreeds(search_str);
+  })
+
   function searchBreeds(search_str) {
     var string_length = search_str.length // get the length of the search string so we know how many characters of the breed name to compare it to
-    search_str = search_str.toLowerCase(); // ensure search string and breed name are same case otherwise they won't match
+    search_str = search_str.toString().toLowerCase(); // ensure search string and breed name are same case otherwise they won't match
     for (var i = 0; i < breeds.length; i++) // loop through all the breeds in order
     {
-      var breed_name_snippet = breeds[i].name.substr(0, string_length).toLowerCase(); // get the first few cahracters of the name
+      var breed_name_snippet = breeds[i].name.substr(0, string_length).toLowerCase(); // get the first few characters of the name
       if (breed_name_snippet == search_str) {
         getDogByBreed(breeds[i].id) // show the breed just as we did in the Select demo
         return; // return the function so we don't keep searching
@@ -103,10 +114,22 @@ $(document).ready(function(){
   // call the getBreeds function which will load all the Dog breeds into the dropdown list
   getBreeds();
 
-
+  // listens for the click on the zip code search button to run the petfinder api call
   $("#search-button").on("click", function() {
+    petFinderSearch();
+  });
 
-    $.ajax({
+  // listens for the enter key on the zip code search to run the petfinder api call
+  $("#search-value").keydown(function (event) {
+    if (event.keyCode == 13) {
+      event.preventDefault();
+      petFinderSearch();
+    }
+  });
+
+
+function petFinderSearch() {
+      $.ajax({
         url: "https://api.petfinder.com/v2/oauth2/token",
         method: 'POST',
         data: {
@@ -115,9 +138,10 @@ $(document).ready(function(){
             client_secret: "Z6hCzpkfaB1XhCqCC4PiokKvAyIAj4bwIQWA2Hsy"
         },
         success: dogSearch
-
     })
-})
+}
+
+
 function dogSearch(obj) {
 
   var zipCode = $("#search-value").val().trim();
@@ -128,8 +152,8 @@ $.ajax ({
     headers: {
         "Authorization": obj.token_type + " " + obj.access_token
     },
-    success: function(result){
-        console.log(result);
+    success: function(result){  
+      console.log(result);
         var arr = result.organizations.splice(0, 10);
         var idQuery = arr.map((o,i)=> o.id).join(",");
         console.log(this);
@@ -156,10 +180,14 @@ $.ajax ({
             console.log(data.animals);
             var animals = data.animals;
             var dogArray = animals.filter(dog => dog.type === "Dog");
+            
+            // sets the dogImg div to empty before running a new zip code search
+            $('#dogImg').empty();
+            
             for(i = 0; i < dogArray.length; i++) {
               var animal = dogArray[i];
               var container = $("<div>").addClass("p-5");
-              var card = $("<div>").addClass("max-w-sm rounded overflow-hidden shadow-lg")
+              var card = $("<div>").addClass("max-w-sm rounded bg-green-50 overflow-hidden shadow-lg")
               var img = $("<img>").attr("src", animal.primary_photo_cropped.small).addClass("w-full").attr("alt", animal.name);
               // Inner 1
               var cardInner = $("<div>").addClass("px-6 py-4");
@@ -169,20 +197,21 @@ $.ajax ({
               var cardInner2 = $("<div>").addClass("px-6 py-4 pb-2");
               var span1 = $("<span>").addClass("inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2").text(animal.contact.email);
               var span2 = $("<span>").addClass("inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2").text(animal.contact.phone);
-              var span3 = $("<span>").addClass("inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 breedID").text(animal.breeds.primary);
-              $(".breedID").click(function() {
-                var breedSearch = $("#breed-search");
-                $('html, body').animate({
-                  scrollTop: $("#breed-search").offset().top
-                }, 1000);
-                breedSearch.val(animal.breeds.primary);
-              })
+              var span3 = $("<span>").addClass("inline-block bg-green-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 breedID").text(animal.breeds.primary);
+                // $(".breedID").click(function() {
+                //   $('html, body').animate({
+                //     scrollTop: $("#breed-search").offset().top
+                //   }, 1000);
+                //   var search_str = $("#breed-search").val(this.innerHTML);
+                //   console.log(search_str);
+                // })
 
               cardInner2.append(span1, span2, span3);
               cardInner.append(cardTitle, cardDesc);
               card.append(img, cardInner, cardInner2);
               container.append(card);
               $("#dogImg").append(container);
+              $('#adoption-info').show();
 
 
             }
