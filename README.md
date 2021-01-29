@@ -40,15 +40,9 @@ Opening page when https://kcnancy.github.io/Project1Group4/ is launched.
 ![Opening Page](images/Open.png)
 
 Upon entering a zip code and clicking enter the zip code will be validated with the Petfinder API and a list of up to 30 adoptable dogs will be returned. 
-<!-- blank line -->
-<figure class="video_container">
-  <video controls="true" allowfullscreen="true" poster="images/poster_image.png">
-    <source src="images/Dogtionaryadoptables.mp4" type="video/mp4">
-    </video>
-</figure>
-<!-- blank line -->
+![Adoptables](images/adoptables.jpg)
 
-Once the adoptable are displayed the user can scroll through the card for each dog. Each card contains an image of the dog as well as contact information for adoption. 
+Once the adoptable are displayed the user can scroll through the card for each dog. Each card contains an image of the dog as well as contact information for adoption. This image was captioned on a mobile device to illustrate reponsiveness of the site.
 ![Selma](images/selma.png)
 
 Within each card is a green button with the breed name. The user will click on this button to be shown the breed information. The breed name will be populated into the Search for a Breed box.
