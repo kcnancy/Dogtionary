@@ -3,6 +3,8 @@ var search_str = "";
 
 $(document).ready(function(){
   $('#adoption-info').hide();
+  $('#breed-data').hide();
+
 
   $('#breed-search').on('input', function(e) {
     var search_str = $(this).val();
@@ -57,19 +59,18 @@ $(document).ready(function(){
 
   // clear the image and table
   function clearBreed() {
-    $('#breed_image').attr('src', "");
-    $("#breed_data_table tr").remove();
+    $('#breed-image').attr('src', "");
   }
   
   // display the breed image and data
   function displayBreed(image) {
-    $('#breed_image').attr('src', image.url);
-    $("#breed_data_table tr").remove();
+    $('#breed-image').attr('src', image.url);
     $("#breed-name").text(image.breeds[0].name);
     $("#breed-height").text("Height: " + image.breeds[0].height.metric + " inches");
     $("#breed-weight").text("Weight: " + image.breeds[0].weight.metric + " lbs");
     $("#breed-temperment").text("Temperament: " + image.breeds[0].temperament);
     $("#breed-lifespan").text("Life Span: " + image.breeds[0].life_span);
+    $('#breed-data').show();
   }
 
   // make an Ajax request
