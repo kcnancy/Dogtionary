@@ -9,9 +9,15 @@
 
     <style>
       /* Scales down the font size when the screen hits 600px wide */
-      @media (max-width: 600px) {
-        #intro-text {
-          font-size: 20px;
+      @media (max-width: 1120px) {
+        #search-value {
+          font-size: 15px;
+        } 
+        p {
+          font-size: 80%;
+        }
+        h2 {
+          font-size: 110% !important;
         }
       }
     </style>
@@ -26,44 +32,44 @@
     <img class="overflow-hidden" src="Assets\background_image.jpg" id="dog-image" style="width:100%; min-height: 300px; max-height: 500px;
     object-fit: cover; object-position: center top;"/>
     <div class="m-3 p-3 rounded-md text-gray-100 bg-blue-900 bg-opacity-75" style="position: absolute; top: 10%; left: 5%; max-width: 40%;">
-      <h1 class="text-2xl mb-3" id="intro-text">Enter your zip code to find dogs near you that need a home!</h1>
-        <input class="text-xl text-gray-900 rounded-md p-2" style="max-width: 50%;" type="text" id="search-value" placeholder="Zip Code">
+      <h2 class="text-2xl mb-3" id="intro-text">Enter your zip code to find dogs near you that need a home!</h2>
+        <input class="text-xl text-gray-900 rounded-md p-1" style="max-width: 50%;" type="text" id="search-value" placeholder="Zip Code">
         <button class="text-2xl text-gray-100 fas fa-search" type="button" id="search-button"></button>
-        <div id="error"></div>
-      <!-- <h1 class="text-xl pt-3" id="intro-text-2">Find a breed you love? Click the breed below a dog to learn more!</h1> -->
-
+        <div id="error">
+          <p>Please enter a valid zip code</p>
+        </div>
     </div>
   </div>
 
-  <div class="flex">
+  <div class="grid grid-cols-1 md:grid-cols-12">
 
-    <div class="grid-cols-4 col-span-2 p-3 rounded-md bg-green-200">
+    <div class="col-span-3 p-3 rounded-md bg-blue-900">
       
-      <div class="grid-rows-1 col-span-2">
+      <div class="grid-rows-1">
         <div class="mr-3">
-          <h1 class="text-xl text-gray-700">Search for a Breed</h1>
+          <h2 class="text-xl text-gray-200">Search for a Breed</h2>
         </div> 
         <div class="mr-5">
-          <input class="mb-3 rounded-md border-2 border-gray-300" id="breed-search"/>
+          <input class="mb-3 rounded-md border-2 border-gray-300" id="breed-search" style="max-width: 100%;"/>
         </div>
         
 
         <div class="mr-3">
-          <h1 class="text-xl text-gray-700">Select a Breed</h1>
+          <h2 class="text-xl text-gray-200">Select a Breed</h2>
         </div>
-        <div>
-          <select class="border-2 rounded-md border-gray-300 breed_select overflow-hidden">
+        <div class="mb-3">
+          <select class="border-2 rounded-md border-gray-300 breed_select overflow-hidden" style="max-width: 100%;">
           <option></option>
           </select>
         </div>
       </div>
 
-      <div class="grid-rows-1 col-span-2 rounded-md" id="breed-data">
-    
+      <div class="grid-rows-1 rounded-md" id="breed-data">
         <div>
-          <div class="p-3 rounded-md bg-yellow-200">
-            <p class="text-2xl text-gray-700" id="breed-name"></p>
-            <div class="text-xl text-gray-700 p-2">
+          <div class="p-3 mb-3 rounded-md bg-yellow-200">
+            <h2 class="text-2xl text-gray-700" id="breed-name"></h2>
+            <h2 class="text-2xl text-gray-700" id="no-breed">Sorry, that breed is not in our Dogtionary yet!</h2>
+            <div class="text-xl text-gray-700 p-2" id="breed-stats">
               <p id="breed-height"></p>
               <p id="breed-weight"></p>
               <p id="breed-temperment"></p>
@@ -73,20 +79,25 @@
         </div>
       </div>
 
-        <div class="p-2 rounded-md bg-green-500 grid-rows-1">
-          <img class="rounded-md border-2 border-green-600 shadow-lg" id="breed-image" style="max-width: 80%;" src=""/>
-        </div>
+      <div class="rounded-md grid-rows-1" id="image-wrapper">
+        <img class="rounded-md border-2 border-yellow-200 shadow-lg" id="breed-image" src=""/>
+      </div>
+
     </div>
     
-    <div class="grid-cols-10 col-span-10 p-2 bg-gray-200 rounded-md" id="adoption-info">
-      <div class="lg:container mb-3 p-2 bg-green-100 rounded-md md:flex flex-wrap overflow-auto" style="max-height: 80vh" id="dogImg"></div>
+    <div class="col-span-9 p-2 bg-gray-200 rounded-md" id="adoption-info">
+      <div class="lg:container p-2 bg-green-100 rounded-md md:flex flex-wrap justify-center overflow-auto" style="max-height: 80vh" id="dogImg"></div>
+    </div>
+
+    <div class="col-span-9 rounded-md p-2">
+      <h2 class="text-2xl text-center mb-3 text-gray-900">
+        Want more information about a specific breed? Search for a breed you are interested in or click a breed in the list of adoptable dogs to learn more!
+      </h2>
     </div>
   </div>
 
-  <div class="p-2 bg-blue-900">
-    <h3 class="text-2xl mb-3 text-gray-200">
-      The Dogtionary gives you a place to learn about a specific breed and show you where to adopt a family fur baby.
-    </h3>
+  <div class="flow-root bg-green-600">
+    <h1 class="text-xl text-gray-100 mb-3 p-3">The Dogtionary gives you a place to learn about dog breeds and shows you dogs near you in need of a home.</h1>
   </div>
     
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

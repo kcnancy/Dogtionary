@@ -1,14 +1,20 @@
 var breeds;
 var search_str = "";
+var dogMatch = "";
 
 $(document).ready(function(){
+  
+  // Hides emppty or unecessary info from the user until relevant
   $('#adoption-info').hide();
   $('#breed-data').hide();
+  $('#image-wrapper').hide();
+  $('#error').hide();
 
-  // searches breed when character's are written into search bar
+  // searches breed when characters are entered into search bar
   $('#breed-search').on('input', function(e) {
     var search_str = $(this).val();
     searchBreeds(search_str);
+    checkDogMatch();
   });
 
   // click event for dog card span breed search
@@ -19,6 +25,7 @@ $(document).ready(function(){
     $("#breed-search").val(this.innerHTML);
     var search_str = $("#breed-search").val();
     searchBreeds(search_str);
+    checkDogMatch();
   })
 
   function searchBreeds(search_str) {
@@ -28,17 +35,27 @@ $(document).ready(function(){
     {
       var breed_name_snippet = breeds[i].name.substr(0, string_length).toLowerCase(); // get the first few characters of the name
       if (breed_name_snippet == search_str) {
-        getDogByBreed(breeds[i].id) // show the breed just as we did in the Select demo
+        getDogByBreed(breeds[i].id)
+        dogMatch = "Match";
         return; // return the function so we don't keep searching
       }
+      dogMatch = "No Match";
+    };
+  }
+
+  function checkDogMatch () {
+    if (dogMatch == "No Match") {
+      $('#image-wrapper').hide();
+      $("#breed-name").hide();
+      $("#breed-stats").hide();
+      $("#no-breed").show();
     }
   }
 
-  // Setup the Controls
+  // Setup the dropdown list
   var $breed_select = $('select.breed_select');
   $breed_select.change(function() {
     var id = $(this).children(":selected").attr("id");
-    console.log(id);
     getDogByBreed(id)
   });
 
@@ -49,18 +66,13 @@ $(document).ready(function(){
 
       if (data.length == 0) {
         // if there are no images returned
-        clearBreed();
-        $("#breed_data_table").append("<tr><td>Sorry, no Image for that breed yet</td></tr>");
+        dogMatch = "No Match";
+        checkDogMatch();
       } else {
         //else display the breed image and data
         displayBreed(data[0])
       }
     });
-  }
-
-  // clear the image and table
-  function clearBreed() {
-    $('#breed-image').attr('src', "");
   }
   
   // display the breed image and data
@@ -71,7 +83,11 @@ $(document).ready(function(){
     $("#breed-weight").text("Weight: " + image.breeds[0].weight.metric + " lbs");
     $("#breed-temperment").text("Temperament: " + image.breeds[0].temperament);
     $("#breed-lifespan").text("Life Span: " + image.breeds[0].life_span);
+    $('#breed-name').show();
     $('#breed-data').show();
+    $('#breed-stats').show();
+    $('#no-breed').hide();
+    $('#image-wrapper').show();
   }
 
   // make an Ajax request
@@ -79,7 +95,6 @@ $(document).ready(function(){
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
       if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-        // console.log('responseText:' + xmlhttp.responseText);
         try {
           var data = JSON.parse(xmlhttp.responseText);
         } catch (err) {
@@ -143,7 +158,6 @@ function petFinderSearch() {
     })
 }
 
-
 function dogSearch(obj) {
 
   //Error code for incorrect zip code entry
@@ -151,22 +165,22 @@ function dogSearch(obj) {
   var errorDiv =  $("#error");
 
   function error() {
-    var incorrectZip = $("<p>").text("Please enter a valid zip code");
-    errorDiv.append(incorrectZip);    
+    errorDiv.show();  
   }
 
-  //Search locate by zip code API
+  //Search locale by zip code API
 $.ajax ({
     url: "https://api.petfinder.com/v2/organizations?location=" + zipCode,
     method: 'GET',
     headers: {
         "Authorization": obj.token_type + " " + obj.access_token
     },
-    statusCode: {
-      400: error()
-    },
-    success: function(result){  
-        console.log(result);
+    error:function (invalidZip){
+      if(invalidZip.status==400) {
+        error();
+      }
+      }
+    }).then(function(result){  
         errorDiv.hide(error());
         var arr = result.organizations.splice(0, 10);
         var idQuery = arr.map((o,i)=> o.id).join(",");
@@ -180,7 +194,6 @@ $.ajax ({
             "Authorization": obj.token_type + " " + obj.access_token
         },
           success: function(data) {
-            console.log(data.animals);
             var animals = data.animals;
             var dogArray = animals.filter(dog => dog.type === "Dog");
             
@@ -201,7 +214,7 @@ $.ajax ({
               var span1 = $("<span>").addClass("inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2").text(animal.contact.email);
               var span2 = $("<span>").addClass("inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2").text(animal.contact.phone);
               var span3 = $("<span>").addClass("inline-block bg-green-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 breedID").text(animal.breeds.primary);
-              var moreInfo = $("<a href ='" + animal.url + "'>").addClass("py-2").css("color", "blue").text("More info...");
+              var moreInfo = $("<a href ='" + animal.url + "'>").attr("target", "_blank").addClass("py-2").css("color", "blue").text("More info...");
             
                 // Appends objects to DOM
               cardInner2.append(span1, span2, span3);
@@ -213,10 +226,9 @@ $.ajax ({
             }
           }
         })
-    }
-})
-}
-})
+    });
+  }
+  })
 
 // $(".breedID").click(function() {
 //   $('html, body').animate({
