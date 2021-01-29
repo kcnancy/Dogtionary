@@ -5,12 +5,13 @@ $(document).ready(function(){
   $('#adoption-info').hide();
   $('#breed-data').hide();
 
-
+  // searches breed when character's are written into search bar
   $('#breed-search').on('input', function(e) {
     var search_str = $(this).val();
     searchBreeds(search_str);
   });
 
+  // click event for dog card span breed search
   $(document).on("click", ".breedID", function() {
     $('html, body').animate({
       scrollTop: $("#breed-search").offset().top
@@ -128,7 +129,7 @@ $(document).ready(function(){
     }
   });
 
-
+// Bearer token type for authentication for petfinder.com
 function petFinderSearch() {
       $.ajax({
         url: "https://api.petfinder.com/v2/oauth2/token",
@@ -145,34 +146,35 @@ function petFinderSearch() {
 
 function dogSearch(obj) {
 
+  //Error code for incorrect zip code entry
   var zipCode = $("#search-value").val().trim();
+  var errorDiv =  $("#error");
 
+  function error() {
+    var incorrectZip = $("<p>").text("Please enter a valid zip code");
+    errorDiv.append(incorrectZip);    
+  }
+
+  //Search locate by zip code API
 $.ajax ({
     url: "https://api.petfinder.com/v2/organizations?location=" + zipCode,
     method: 'GET',
     headers: {
         "Authorization": obj.token_type + " " + obj.access_token
     },
+    statusCode: {
+      400: error()
+    },
     success: function(result){  
-      console.log(result);
+        console.log(result);
+        errorDiv.hide(error());
         var arr = result.organizations.splice(0, 10);
         var idQuery = arr.map((o,i)=> o.id).join(",");
-        console.log(this);
-        console.log("https://api.petfinder.com/v2/animals" + "?organization=" + idQuery)
+        var limitVar = "&limit=30";
 
+        // Grabs animals from locations found by zip code
         $.ajax ({
-          url: "https://api.petfinder.com/v2/types/Dog",
-          method:"GET",
-          headers: {
-            "Authorization": obj.token_type + " " + obj.access_token
-          },
-          success: function(type) {
-            console.log(type);
-          }
-        })
-
-        $.ajax ({
-          url: "https://api.petfinder.com/v2/animals" + "?organization=" + idQuery,
+          url: "https://api.petfinder.com/v2/animals" + "?organization=" + idQuery + limitVar,
           method: 'GET',
           headers: {
             "Authorization": obj.token_type + " " + obj.access_token
@@ -199,28 +201,30 @@ $.ajax ({
               var span1 = $("<span>").addClass("inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2").text(animal.contact.email);
               var span2 = $("<span>").addClass("inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2").text(animal.contact.phone);
               var span3 = $("<span>").addClass("inline-block bg-green-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 breedID").text(animal.breeds.primary);
-                // $(".breedID").click(function() {
-                //   $('html, body').animate({
-                //     scrollTop: $("#breed-search").offset().top
-                //   }, 1000);
-                //   var search_str = $("#breed-search").val(this.innerHTML);
-                //   console.log(search_str);
-                // })
-
+              var moreInfo = $("<a href ='" + animal.url + "'>").addClass("py-2").css("color", "blue").text("More info...");
+            
+                // Appends objects to DOM
               cardInner2.append(span1, span2, span3);
-              cardInner.append(cardTitle, cardDesc);
+              cardInner.append(cardTitle, cardDesc, moreInfo);
               card.append(img, cardInner, cardInner2);
               container.append(card);
               $("#dogImg").append(container);
               $('#adoption-info').show();
-
-
             }
           }
         })
-
     }
 })
 }
 })
+
+// $(".breedID").click(function() {
+//   $('html, body').animate({
+//     scrollTop: $("#breed-search").offset().top
+//   }, 1000);
+//   var search_str = $("#breed-search").val(this.innerHTML);
+//   console.log(search_str);
+// })
+
+// moved this to bottom of page for cleanup. Unsure if still needed?
 
