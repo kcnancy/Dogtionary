@@ -37,24 +37,31 @@ To develop this project html, js, jquery, ajax and tailwindcss were used. API's 
 
 ## Usage
 Opening page when https://kcnancy.github.io/Project1Group4/ is launched.
+
 ![Opening Page](images/Open.png)
 
-Upon entering a zip code and clicking enter the zip code will be validated with the Petfinder API and a list of up to 30 adoptable dogs will be returned. 
+Upon entering a zip code and clicking enter the zip code will be validated with the Petfinder API and a list of up to 30 adoptable dogs will be returned. This image was captured on a mobile device to illustrate reponsiveness of the site.
+
 ![Adoptables](images/adoptables.jpg)
 
-Once the adoptable are displayed the user can scroll through the card for each dog. Each card contains an image of the dog as well as contact information for adoption. This image was captioned on a mobile device to illustrate reponsiveness of the site.
+Once the adoptable dogs are displayed the user can scroll through the card for each dog. Each card contains an image of the dog as well as contact information for adoption. 
+
 ![Selma](images/selma.png)
 
+If the user clicks on the more info... link in the description of the adoptable dog, a new browser window will open to petfinder where additional information specific to that dog can be found.
+
 Within each card is a green button with the breed name. The user will click on this button to be shown the breed information. The breed name will be populated into the Search for a Breed box.
+
 ![selmabreed](images/selmabreedinfo.png)
 
-If the user clicks on the more info... link in the description of the adoptable dog, a new browser window will open to petfinder where additional information specific to that dog can be found.
+
 
 Clicking on the Dogtionary logo in the header, at the top of the page will refresh and reset the page.
 
 ![logo](images/logo.png)
 
 ## Tests and Known Issues
+Tested zip code search on various devices to ensure responsiveness.
 
 ## Future Enhancements
 - Add facts and images for additional common breeds.
@@ -65,6 +72,7 @@ Clicking on the Dogtionary logo in the header, at the top of the page will refre
 - Matthew Bishop
 - Nancy McBride
 - Brenna McLeod
+
 ## License
 MIT License
 
