@@ -1,5 +1,5 @@
 # Dogtionary
-https://kcnancy.github.io/Project1Group4/
+https://kcnancy.github.io/Dogtionary/
 
 ## Table of Contents
 * [Description](#description)
