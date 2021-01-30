@@ -36,7 +36,7 @@ To develop this project html, js, jquery, ajax and tailwindcss were used. API's 
 * https://thedogapi.com/
 
 ## Usage
-Opening page when https://kcnancy.github.io/Project1Group4/ is launched.
+Opening page when https://kcnancy.github.io/Dogtionary/ is launched.
 
 ![Opening Page](images/Open.png)
 
