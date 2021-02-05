@@ -69,9 +69,9 @@ Tested zip code search on various devices to ensure responsiveness.
 - Add the option to search for local dog parks.
 
 ## Credits
-- Matthew Bishop
-- Nancy McBride
-- Brenna McLeod
+- Matthew Bishop https://github.com/mtbishop
+- Nancy McBride https://github.com/kcnancy
+- Brenna McLeod https://github.com/bmcleod12
 
 ## License
 MIT License
