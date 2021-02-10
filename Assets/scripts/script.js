@@ -175,58 +175,56 @@ $.ajax ({
     headers: {
         "Authorization": obj.token_type + " " + obj.access_token
     },
-    error:function (invalidZip){
-      if(invalidZip.status==400) {
-        error();
-      }
-      }
     }).then(function(result){  
-        errorDiv.hide(error());
-        var arr = result.organizations.splice(0, 10);
-        var idQuery = arr.map((o,i)=> o.id).join(",");
-        var limitVar = "&limit=30";
+      errorDiv.hide(error());
+      var arr = result.organizations.splice(0, 10);
+      var idQuery = arr.map((o,i)=> o.id).join(",");
+      var limitVar = "&limit=30";
 
-        // Grabs animals from locations found by zip code
-        $.ajax ({
-          url: "https://api.petfinder.com/v2/animals" + "?organization=" + idQuery + limitVar,
-          method: 'GET',
-          headers: {
-            "Authorization": obj.token_type + " " + obj.access_token
+      // Grabs animals from locations found by zip code
+      return $.ajax ({
+        url: "https://api.petfinder.com/v2/animals" + "?organization=" + idQuery + limitVar,
+        method: 'GET',
+        headers: {
+          "Authorization": obj.token_type + " " + obj.access_token
         },
-          success: function(data) {
-            var animals = data.animals;
-            var dogArray = animals.filter(dog => dog.type === "Dog");
-            
-            // sets the dogImg div to empty before running a new zip code search
-            $('#dogImg').empty();
-            
-            for(i = 0; i < dogArray.length; i++) {
-              var animal = dogArray[i];
-              var container = $("<div>").addClass("p-5");
-              var card = $("<div>").addClass("max-w-sm rounded bg-green-50 overflow-hidden shadow-lg")
-              var img = $("<img>").attr("src", animal.primary_photo_cropped.small).addClass("w-full").attr("alt", animal.name);
-              // Inner 1
-              var cardInner = $("<div>").addClass("px-6 py-4");
-              var cardTitle = $("<div>").addClass("font-bold text-xl mb-2").text(animal.name);
-              var cardDesc = $("<p>").addClass("text-gray-700 text-base").text(animal.description);
-              // Inner 2
-              var cardInner2 = $("<div>").addClass("px-6 py-4 pb-2");
-              var span1 = $("<span>").addClass("inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2").text(animal.contact.email);
-              var span2 = $("<span>").addClass("inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2").text(animal.contact.phone);
-              var span3 = $("<span>").addClass("inline-block bg-green-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 breedID").text(animal.breeds.primary);
-              var moreInfo = $("<a href ='" + animal.url + "'>").attr("target", "_blank").addClass("py-2").css("color", "blue").text("More info...");
-            
-                // Appends objects to DOM
-              cardInner2.append(span1, span2, span3);
-              cardInner.append(cardTitle, cardDesc, moreInfo);
-              card.append(img, cardInner, cardInner2);
-              container.append(card);
-              $("#dogImg").append(container);
-              $('#adoption-info').show();
-            }
-          }
-        })
-    });
+      })
+    }).then(function(data) {
+      var animals = data.animals;
+      var dogArray = animals.filter(dog => dog.type === "Dog");
+      
+      // sets the dogImg div to empty before running a new zip code search
+      $('#dogImg').empty();
+      
+      for(i = 0; i < dogArray.length; i++) {
+        var animal = dogArray[i];
+        var container = $("<div>").addClass("p-5");
+        var card = $("<div>").addClass("max-w-sm rounded bg-green-50 overflow-hidden shadow-lg")
+        var img = $("<img>").attr("src", animal.primary_photo_cropped.small).addClass("w-full").attr("alt", animal.name);
+        // Inner 1
+        var cardInner = $("<div>").addClass("px-6 py-4");
+        var cardTitle = $("<div>").addClass("font-bold text-xl mb-2").text(animal.name);
+        var cardDesc = $("<p>").addClass("text-gray-700 text-base").text(animal.description);
+        // Inner 2
+        var cardInner2 = $("<div>").addClass("px-6 py-4 pb-2");
+        var span1 = $("<span>").addClass("inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2").text(animal.contact.email);
+        var span2 = $("<span>").addClass("inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2").text(animal.contact.phone);
+        var span3 = $("<span>").addClass("inline-block bg-green-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 breedID").text(animal.breeds.primary);
+        var moreInfo = $("<a href ='" + animal.url + "'>").attr("target", "_blank").addClass("py-2").css("color", "blue").text("More info...");
+      
+          // Appends objects to DOM
+        cardInner2.append(span1, span2, span3);
+        cardInner.append(cardTitle, cardDesc, moreInfo);
+        card.append(img, cardInner, cardInner2);
+        container.append(card);
+        $("#dogImg").append(container);
+        $('#adoption-info').show();
+      }
+    }).catch(function(err){
+      console.log(err);
+      error();
+    })
+
   }
   })
 
