@@ -165,8 +165,8 @@ $(document).ready(function () {
       method: 'POST',
       data: {
         grant_type: 'client_credentials',
-        client_id: 'wvbrgRWLHRtCwGrwt9yFqLlV51glZBlHhfJTaoDNn3NiKwez7K',
-        client_secret: 'OEjdgV5DMxIf2Sg3IMxHj1WPTTrlvX7gs8Nig7cC',
+        client_id: 'FpoUBXmPleG0CVIRPzNE4dkMea3Z8IE61i5O2OWtCu5jc51nVP',
+        client_secret: 'nS26FxvTE5TrgFtutN4FVV7CtL94geujNZQJqNXO',
       },
       success: dogSearch,
     });
